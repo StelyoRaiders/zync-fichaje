@@ -251,10 +251,10 @@ Este script es parte de ZyncBot Premium. Requiere una suscripción activa y API 
 ## 🤝 Soporte
 
 - Discord: [Servidor de soporte de ZyncBot]
-- Panel Web: https://zyncbot.com
+- Panel Web: https://zyncbot.net
 
 - Discord: [Servidor de Soporte](https://discord.gg/HkyASK3Sg3)
-- Documentación: [docs.zyncbot.com](https://docs.zyncbot.com)
+- Documentación: [docs.zyncbot.com](https://docs.zyncbot.net)
 
 ---
 

@@ -19,7 +19,7 @@ game 'gta5'
 author 'Zync Team'
 description 'Sistema de fichaje para FiveM integrado con Zync Bot'
 version '1.0.0'
-repository 'https://github.com/zyncbot/zync-fichaje-fivem'
+repository 'https://github.com/StelyoRaiders/zync-fichaje'
 
 -- Archivos de configuración
 shared_scripts {
