@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zync Fichaje</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="tablet/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         PANEL DE FICHAJE (Punto de fichaje)
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <div id="app" class="hidden">
+        <div class="container">
+            <!-- Header -->
+            <div class="header">
+                <div class="logo">
+                    <img id="logoImage" src="" alt="Logo" class="logo-img hidden">
+                    <svg id="logoSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="icon">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    <span id="logoText">ZYNC</span>
+                </div>
+                <button id="closeBtn" class="close-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Business Info -->
+            <div class="business-info">
+                <h1 id="businessName">Negocio</h1>
+                <p id="pointName" class="point-name"></p>
+            </div>
+
+            <!-- Status Section -->
+            <div class="status-section">
+                <div class="status-card" id="statusCard">
+                    <div class="status-indicator" id="statusIndicator"></div>
+                    <div class="status-text">
+                        <span id="statusLabel">Estado</span>
+                        <span id="statusValue">Sin fichar</span>
+                    </div>
+                </div>
+                
+                <div class="time-display" id="timeDisplay">
+                    <span class="time-label">Tiempo trabajado</span>
+                    <span class="time-value" id="timeValue">00:00:00</span>
+                </div>
+                
+                <div class="time-display total-time" id="totalTimeDisplay">
+                    <span class="time-label">⏱️ Tiempo total en categoría</span>
+                    <span class="time-value" id="totalTimeValue">00:00:00</span>
+                </div>
+            </div>
+
+            <!-- Link Section -->
+            <div class="link-section" id="linkSection">
+                <div class="user-card" id="userCard">
+                    <img id="userAvatar" class="user-avatar" src="" alt="Avatar">
+                    <div class="user-info">
+                        <span class="user-label">Conectado como</span>
+                        <span class="user-name" id="discordName"></span>
+                    </div>
+                    <span class="user-status" id="linkIcon">✅</span>
+                </div>
+            </div>
+
+            <!-- Link Form (Hidden by default) -->
+            <div class="link-form hidden" id="linkForm">
+                <p class="link-instructions">Usa <code>/fivem vincular</code> en Discord para obtener tu código</p>
+                <div class="input-group">
+                    <input type="text" id="linkCode" placeholder="ABC12345" maxlength="8" autocomplete="off">
+                    <button id="linkBtn" class="btn btn-secondary">Vincular</button>
+                </div>
+                <p class="link-error hidden" id="linkError"></p>
+            </div>
+
+            <!-- Actions -->
+            <div class="actions">
+                <button id="clockInBtn" class="btn btn-primary btn-large">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="btn-icon">
+                        <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                    </svg>
+                    <span>Fichar Entrada</span>
+                </button>
+                <button id="clockOutBtn" class="btn btn-danger btn-large hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="btn-icon">
+                        <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                    </svg>
+                    <span>Fichar Salida</span>
+                </button>
+            </div>
+
+            <!-- Loading Overlay -->
+            <div class="loading-overlay hidden" id="loadingOverlay">
+                <div class="spinner"></div>
+                <span>Conectando...</span>
+            </div>
+
+            <!-- Notification Toast -->
+            <div class="toast hidden" id="toast">
+                <span id="toastMessage"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         TABLET DE GESTIÓN
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <div id="tablet" class="hidden">
+        <div class="tablet-container">
+            <!-- Header -->
+            <div class="tablet-header">
+                <div class="header-left">
+                    <div class="tablet-logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="icon">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                        <span id="tabletBusinessName">Panel de Gestión</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button id="tabletRefreshBtn" class="icon-btn" title="Refrescar">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                        </svg>
+                    </button>
+                    <button id="tabletCloseBtn" class="close-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tabs de categorías -->
+            <div class="category-tabs" id="categoryTabs">
+                <button class="category-tab active" data-category="all">
+                    <span class="tab-icon">📊</span>
+                    <span class="tab-name">General</span>
+                </button>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="stats-overview">
+                <div class="stat-card">
+                    <div class="stat-icon active-icon">👥</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Total horas fichadas</span>
+                        <span class="stat-value" id="tabletTotalHours">0h 0min</span>
+                    </div>
+                </div>
+                <div class="stat-card highlight">
+                    <div class="stat-info">
+                        <span class="stat-value" id="tabletActiveCount">0</span>
+                        <span class="stat-label">activos</span>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="tabletTotalUsers">0</span>
+                        <span class="stat-label">usuarios</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="tablet-content">
+                <!-- Active Shifts Panel -->
+                <div class="panel active-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <span class="panel-icon">🔥</span>
+                            <span>Fichando ahora</span>
+                            <span class="badge" id="tabletActiveBadge">0</span>
+                        </div>
+                    </div>
+                    <div class="panel-body" id="tabletActiveShiftsList">
+                        <div class="empty-state">
+                            <span class="empty-icon">😴</span>
+                            <span>Nadie está fichando en esta categoría</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Shifts Panel -->
+                <div class="panel recent-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <span class="panel-icon">🕐</span>
+                            <span>Fichajes recientes</span>
+                        </div>
+                    </div>
+                    <div class="panel-body" id="tabletRecentShiftsList">
+                        <div class="empty-state">
+                            <span class="empty-icon">📭</span>
+                            <span>Sin fichajes recientes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Users Table -->
+            <div class="panel table-panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <span class="panel-icon">📋</span>
+                        <span>Todos los fichajes</span>
+                        <span class="badge secondary" id="tabletTotalUsersBadge">0 usuarios</span>
+                    </div>
+                    <div class="sort-controls">
+                        <span>↕️</span>
+                        <select id="tabletSortSelect">
+                            <option value="time-desc">Mayor a menor</option>
+                            <option value="time-asc">Menor a mayor</option>
+                            <option value="name-asc">Nombre A-Z</option>
+                            <option value="name-desc">Nombre Z-A</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th class="col-user">USUARIO</th>
+                                <th class="col-status">ESTADO</th>
+                                <th class="col-time">TIEMPO TOTAL</th>
+                                <th class="col-actions">ACCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabletUsersTableBody">
+                            <!-- Dynamic content -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tablet Toast -->
+        <div id="tabletToast" class="toast hidden">
+            <span id="tabletToastMessage"></span>
+        </div>
+
+        <!-- Confirm Modal -->
+        <div id="tabletConfirmModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="modal-icon">⚠️</span>
+                    <h3>Confirmar acción</h3>
+                </div>
+                <p id="tabletModalMessage">¿Estás seguro de que quieres forzar la salida de este usuario?</p>
+                <div class="modal-user" id="tabletModalUserInfo">
+                    <img id="tabletModalUserAvatar" src="" alt="">
+                    <span id="tabletModalUserName"></span>
+                </div>
+                <div class="modal-actions">
+                    <button id="tabletModalCancel" class="btn btn-secondary">Cancelar</button>
+                    <button id="tabletModalConfirm" class="btn btn-danger">Forzar salida</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tablet Loading Overlay -->
+        <div id="tabletLoadingOverlay" class="loading-overlay hidden">
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="tablet/script.js"></script>
+</body>
+</html>
