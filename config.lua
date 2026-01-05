@@ -41,12 +41,8 @@ Config.Framework = "auto"
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- IDENTIFICADOR PREFERIDO
 -- ═══════════════════════════════════════════════════════════════════════════════
--- Qué identificador usar para vincular cuentas:
--- "discord"  → Discord ID (RECOMENDADO - auto-vincula sin paso manual)
--- "steam"    → Steam HEX (requiere vinculación manual)
--- "license"  → Rockstar License (requiere vinculación manual)
--- "fivem"    → FiveM License (requiere vinculación manual)
--- ⚠️ Si usas "discord", los jugadores deben tener Discord vinculado en FiveM
+-- Identificador principal para vincular cuentas y fichajes.
+
 Config.PreferredIdentifier = "discord"
 
 -- ═══════════════════════════════════════════════════════════════════════════════
@@ -66,9 +62,6 @@ Config.Commands = {
     clockIn = "fichar",         -- /fichar [negocio]
     clockOut = "salir",         -- /salir
     checkTime = "tiempo",       -- /tiempo [negocio]
-    -- DEPRECATED: Vinculación manual ya no necesaria (auto-link por Discord ID)
-    -- link = "zvincular",      -- /zvincular <codigo>
-    -- status = "zestado",      -- /zestado
 }
 
 -- ═══════════════════════════════════════════════════════════════════════════════
@@ -83,7 +76,7 @@ Config.InteractionKeyLabel = "E"    -- Texto a mostrar
 -- ⭐ NEGOCIOS CONFIGURADOS
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- Cada negocio representa un servidor de Discord diferente con Zync Bot.
--- Un servidor de FiveM puede tener MÚLTIPLES negocios.
+
 
 Config.Businesses = {
 
@@ -432,5 +425,5 @@ Config.NotificationSystem = "auto"
 Config.DefaultUI = {
     theme = "dark",
     accentColor = "#5865F2",    -- Azul Discord
-    logo = "",                   -- Logo de Zync por defecto
+    logo = "https://zyncbot.net/synclogo.png",                   -- Logo de Zync por defecto
 }
